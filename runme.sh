@@ -50,7 +50,7 @@ done
 
 ###################################################################################################################################
 #                                                       INSTALL Buildroot
-
+set -e
 if [[ ! -d $BASE_DIR/build/buildroot ]]; then
 	cd $BASE_DIR/build
 	git clone ${SHALLOW_FLAG} https://github.com/buildroot/buildroot -b $BUILDROOT_VERSION
@@ -99,9 +99,9 @@ mcopy -i tmp/part1.fat32 $BASE_DIR/images/tmp/zImage ::/boot/zImage
 mcopy -s -i tmp/part1.fat32 $BASE_DIR/images/tmp/*.dtb ::/boot/
 mcopy -s -i tmp/part1.fat32 $BASE_DIR/build/buildroot/output/images/rootfs.cpio ::/boot/rootfs.cpio
 
-dd if=/dev/zero of=${IMG} bs=1M count=301
+dd if=/dev/zero of=${IMG} bs=1M count=351
 
-env PATH="$PATH:/sbin:/usr/sbin" parted --script ${IMG} mklabel msdos mkpart primary 2MiB 150MiB mkpart primary 150MiB 300MiB
+env PATH="$PATH:/sbin:/usr/sbin" parted --script ${IMG} mklabel msdos mkpart primary 2MiB 150MiB mkpart primary 150MiB 350MiB
 dd if=tmp/part1.fat32 of=${IMG} bs=1M seek=2 conv=notrunc
 # File System
 dd if=$BASE_DIR/build/buildroot/output/images/rootfs.ext2 of=${IMG} bs=1M seek=150 conv=notrunc
