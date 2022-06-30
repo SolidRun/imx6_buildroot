@@ -7,14 +7,15 @@ RUN set -e; \
         :
 
 # Install packages
-RUN DEBIAN_FRONTEND=noninteractive apt install -y \
+RUN set -e; apt update; apt upgrade -y; apt-get install -y apt-utils; \
+  DEBIAN_FRONTEND=noninteractive apt install -y \
 	git make mtools coreutils u-boot-tools bison \
 	gcc-arm-linux-gnueabihf gcc-arm-linux-gnueabi \
 	gcc-aarch64-linux-gnu python3 python3-pyelftools \
 	libssl-dev build-essential device-tree-compiler \
 	bc unzip tar util-linux binutils e2fsprogs gawk \
 	wget diffstat texinfo chrpath sed g++ bash patch \
-	cpio python2 rsync file python3-pip flex parted
+	cpio python2 rsync file python3-pip flex parted dosfstools udev
 
 
 # Install python modules
