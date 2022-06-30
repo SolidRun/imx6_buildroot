@@ -68,7 +68,8 @@ cp imx6dl-cubox-i-emmc-som-v15.dtb imx6dl-cubox-i-emmc.dtb
 cp imx6dl-hummingboard-emmc-som-v15.dtb imx6dl-hummingboard-emmc.dtb
 cp imx6q-cubox-i-emmc-som-v15.dtb imx6q-cubox-i-emmc.dtb
 cp imx6q-hummingboard-emmc-som-v15.dtb imx6q-hummingboard-emmc.dtb
-
+cp imx6dl-hummingboard2-emmc-som-v15.dtb imx6dl-hummingboard2-emmc.dtb
+cp imx6q-hummingboard2-emmc-som-v15.dtb imx6q-hummingboard2-emmc.dtb
 
 ###################################################################################################################################
 #                                                       Create disk images
@@ -88,7 +89,7 @@ cp $BASE_DIR/build/buildroot/output/images/rootfs.cpio $BASE_DIR/build/buildroot
 # Create extlinux.conf boot file
 echo "label linux" > $BASE_DIR/images/extlinux.conf
 echo "        linux ../boot/zImage" >> $BASE_DIR/images/extlinux.conf
-echo "        fdtdir ../boot/dtbs/" >> $BASE_DIR/images/extlinux.conf
+echo "        fdtdir ../boot/" >> $BASE_DIR/images/extlinux.conf
 echo "        initrd ../boot/rootfs.cpio" >> $BASE_DIR/images/extlinux.conf
 echo "        append root=/dev/mmcblk1p2 rootwait" >> $BASE_DIR/images/extlinux.conf
 mmd -i tmp/part1.fat32 ::/extlinux
@@ -99,13 +100,14 @@ mcopy -s -i tmp/part1.fat32 $BASE_DIR/images/tmp/*.dtb ::/boot/
 mcopy -s -i tmp/part1.fat32 $BASE_DIR/build/buildroot/output/images/rootfs.cpio ::/boot/rootfs.cpio
 
 dd if=/dev/zero of=${IMG} bs=1M count=301
-# Copy u-boot stuff
-dd if=$BASE_DIR/images/tmp/SPL of=${IMG} bs=1k seek=1 conv=notrunc
-dd if=$BASE_DIR/images/tmp/u-boot.img of=${IMG} bs=1k seek=69 conv=notrunc
+
 env PATH="$PATH:/sbin:/usr/sbin" parted --script ${IMG} mklabel msdos mkpart primary 2MiB 150MiB mkpart primary 150MiB 300MiB
 dd if=tmp/part1.fat32 of=${IMG} bs=1M seek=2 conv=notrunc
 # File System
 dd if=$BASE_DIR/build/buildroot/output/images/rootfs.ext2 of=${IMG} bs=1M seek=150 conv=notrunc
+# Copy u-boot stuff
+dd if=$BASE_DIR/images/tmp/SPL of=${IMG} bs=1k seek=1 conv=notrunc
+dd if=$BASE_DIR/images/tmp/u-boot.img of=${IMG} bs=1k seek=69 conv=notrunc
 
 echo -e "\n\n*** Image is ready - images/${IMG}"
 
