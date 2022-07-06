@@ -6,6 +6,12 @@ Main intention of this repository is to build a buildroot based build environmen
 
 The build script provides ready to use images that can be deployed on a micro SD card.
 
+##  Source code versions
+
+- [U-boot 2022.04](https://github.com/u-boot/u-boot/tree/v2022.04)
+- [Linux kernel 5.18](https://github.com/torvalds/linux/tree/v5.18)
+- [Buildroot 2022.05](https://github.com/buildroot/buildroot/tree/2022.05)
+
 ## Building Image
 
 The build script will check for required tools, clone and build images and place results in output/ directory.
@@ -49,4 +55,12 @@ In order to create a bootable SD card, plug in a micro SD into your machine and 
 ```
 umount /media/<relevant directory>
 sudo dd if=output/microsd-<hash>.img of=/dev/sdX
+```
+
+---
+**NOTE**
+
+If you use **HummingBoard CBI** Carrier board, you should change the U-Boot environment is_cbi for 'no' to 'yes' to enable the RS485 & CanBus interface, you can use the U-boot commands below:
+```
+setenv is_cbi yes; saveenv; boot
 ```

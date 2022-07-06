@@ -5,7 +5,7 @@ echo "test one start .....................!!"
 ###################################################################################################################################
 #                                                       Global environment
 
-BUILDROOT_VERSION=2020.08.1
+BUILDROOT_VERSION=2022.02
 
 export ARCH=arm
 export CROSS_COMPILE=$BASE_DIR/build/buildroot/output/host/bin/arm-linux-
