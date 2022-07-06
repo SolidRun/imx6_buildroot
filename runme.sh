@@ -59,7 +59,7 @@ fi
 # Build buildroot
 echo "*** Building buildroot"
 cd $BASE_DIR/build/buildroot
-cp $BASE_DIR/configs/imx6_solidrun_defconfig configs/imx6_solidrun_defconfig
+cp $BASE_DIR/configs/imx6_solidrun_minimal_defconfig configs/imx6_solidrun_defconfig
 make imx6_solidrun_defconfig
 make
 
