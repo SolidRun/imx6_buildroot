@@ -60,9 +60,9 @@ sudo dd if=output/microsd-<hash>.img of=/dev/sdX
 ---
 **NOTE**
 
-If you use **HummingBoard CBI** Carrier board, you should change the U-Boot environment hb_cbi for 'no' to 'yes' to enable the RS485 & CanBus interface, you can use the U-boot commands below:
+If you use **HummingBoard CBI** Carrier board, you should change the U-Boot environment is_cbi for 'no' to 'yes' to enable the RS485 & CanBus interface, you can use the U-boot commands below:
 ```
-setenv hb_cbi yes; saveenv; boot
+setenv is_cbi yes; saveenv; boot
 ```
 
 ---
