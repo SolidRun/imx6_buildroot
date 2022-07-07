@@ -32,7 +32,7 @@ docker images | grep imx6
 
 * Run the build script:
 ```
-docker run --rm -it -v "$PWD":/imx6_build/imx6_buildroot -v /etc/gitconfig:/etc/gitconfig imx6:latest /bin/bash
+docker run --rm -it -v "$PWD":/imx6_build/imx6_buildroot imx6:latest /bin/bash
 # Run the build script
 cd /imx6_build/imx6_buildroot && ./runme.sh
 ```
