@@ -1,0 +1,4 @@
+/imx6_build/imx6_buildroot/build/buildroot/package/lirc-tools/0001-Fix-build-without-Python.patch
+/imx6_build/imx6_buildroot/build/buildroot/package/lirc-tools/0002-Fix-python-client-cross-compile.patch
+/imx6_build/imx6_buildroot/build/buildroot/package/lirc-tools/0003-python-pkg-Fix-lirc-version-detection-when-cross-com.patch
+/imx6_build/imx6_buildroot/build/buildroot/package/lirc-tools/0004-plugins-devinput.c-fix-build-with-musl-1.2.0.patch
