@@ -8,7 +8,7 @@ The build script provides ready to use images that can be deployed on a micro SD
 
 ## Source code versions
 
-- [U-boot 2018.11](https://github.com/SolidRun/u-boot/tree/v2018.11-solidrun)
+- [U-boot 2018.11](https://github.com/SolidRun/u-boot/tree/v2018.01-solidrun-imx6)
 - [Linux kernel 5.18](https://github.com/torvalds/linux/tree/v5.18)
 - [Buildroot 2020.08.1](https://github.com/buildroot/buildroot/tree/2020.08.1)
 
@@ -32,10 +32,11 @@ docker images | grep imx6
 
 * Run the build script:
 ```
-docker run --rm -it -v "$PWD":/imx6_build/imx6_buildroot -v /etc/gitconfig:/etc/gitconfig imx6:latest /bin/bash
+docker run --rm -it -v "$PWD":/imx6_build/imx6_buildroot imx6:latest /bin/bash
 # Run the build script
 cd /imx6_build/imx6_buildroot && ./runme.sh
 ```
+**Note:** run the above commands from imx6_buildroot directory
 
 To Delete all containers:
 ```
