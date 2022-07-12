@@ -56,6 +56,9 @@ if [[ ! -d $BASE_DIR/build/buildroot ]]; then
 	git clone ${SHALLOW_FLAG} https://github.com/buildroot/buildroot -b $BUILDROOT_VERSION
 fi
 
+# create u-boot patches directory
+mkdir -p $BASE_DIR/patches/u-boot-2018
+
 # Build buildroot
 echo "*** Building buildroot"
 cd $BASE_DIR/build/buildroot
