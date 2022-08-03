@@ -1,0 +1,71 @@
+From 44726baab8355f648e5ba6a6df43c8b07d1d1fe0 Mon Sep 17 00:00:00 2001
+From: Jon Nettleton <jon@solid-run.com>
+Date: Mon, 1 Aug 2022 13:01:17 +0200
+Subject: [PATCH 01/18] ARM: dts: imx6qdl-sr-som-*
+
+Minor fixups for the wireless modules on the mx6 SOMs
+
+Signed-off-by: Jon Nettleton <jon@solid-run.com>
+---
+ arch/arm/boot/dts/imx6qdl-sr-som-brcm.dtsi | 25 +++++++++++++++++++++-
+ arch/arm/boot/dts/imx6qdl-sr-som-ti.dtsi   |  1 +
+ 2 files changed, 25 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/imx6qdl-sr-som-brcm.dtsi b/arch/arm/boot/dts/imx6qdl-sr-som-brcm.dtsi
+index b55af61dfeca..7529c813b9f3 100644
+--- a/arch/arm/boot/dts/imx6qdl-sr-som-brcm.dtsi
++++ b/arch/arm/boot/dts/imx6qdl-sr-som-brcm.dtsi
+@@ -125,9 +125,20 @@ MX6QDL_PAD_SD1_DAT3__SD1_DATA3 0x17059
+ /* UART4 - Connected to optional BRCM Wifi/BT/FM */
+ &uart4 {
+ 	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_microsom_brcm_bt &pinctrl_microsom_uart4>;
++	pinctrl-0 = <&pinctrl_microsom_uart4>;
+ 	uart-has-rtscts;
+ 	status = "okay";
++
++	bluetooth {
++		compatible = "brcm,bcm43438-bt";
++		clocks = <&clk_brcm>;
++		clock-names = "ext_clock";
++		device-wakeup-gpios = <&gpio6 1 GPIO_ACTIVE_HIGH>;
++		shutdown-gpios = <&gpio6 5 GPIO_ACTIVE_HIGH>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_microsom_brcm_bt>;
++		max-speed = <3000000>;
++	};
+ };
+ 
+ /* USDHC1 - Connected to optional BRCM Wifi/BT/FM */
+@@ -141,4 +152,16 @@ &usdhc1 {
+ 	non-removable;
+ 	vmmc-supply = <&reg_brcm>;
+ 	status = "okay";
++
++	brcmf: wifi@1 {
++		compatible = "brcm,bcm4329-fmac";
++		reg = <1>;
++/*
++                pinctrl-names = "default";
++                pinctrl-0 = <&pinctrl_microsom_brcm_wifi_irq>;
++		OOB Interrupts are broken on BCM4330 with the brcmfmac driver
++                interrupt-parent = <&gpio5>;
++                interrupts = <20 IRQ_TYPE_LEVEL_LOW>;
++*/
++	};
+ };
+diff --git a/arch/arm/boot/dts/imx6qdl-sr-som-ti.dtsi b/arch/arm/boot/dts/imx6qdl-sr-som-ti.dtsi
+index 352ac585ca6b..36b7c95ec174 100644
+--- a/arch/arm/boot/dts/imx6qdl-sr-som-ti.dtsi
++++ b/arch/arm/boot/dts/imx6qdl-sr-som-ti.dtsi
+@@ -154,6 +154,7 @@ &usdhc1 {
+ 	keep-power-in-suspend;
+ 	mmc-pwrseq = <&pwrseq_ti_wifi>;
+ 	cap-power-off-card;
++	no-1-8-v;
+ 	non-removable;
+ 	vmmc-supply = <&vcc_3v3>;
+ 	/* vqmmc-supply = <&nvcc_sd1>; - MMC layer doesn't like it! */
+-- 
+2.37.1
+

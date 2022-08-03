@@ -1,0 +1,87 @@
+From 16ef95c45870e58a999db45b701ed9cf3cbd7c7a Mon Sep 17 00:00:00 2001
+From: Adrian Ratiu <adrian.ratiu@collabora.com>
+Date: Tue, 9 Jun 2020 20:49:56 +0300
+Subject: [PATCH 15/18] drm: stm: dw-mipi-dsi: let the bridge handle the HW
+ version check
+
+The stm mipi-dsi platform driver added a version test in
+commit fa6251a747b7 ("drm/stm: dsi: check hardware version")
+so that HW revisions other than v1.3x get rejected. The rockchip
+driver had no such check and just assumed register layouts are
+v1.3x compatible.
+
+Having such tests was a good idea because only v130/v131 layouts
+were supported at the time, however since adding multiple layout
+support in the bridge, the version is automatically checked for
+all drivers, compatible layouts get picked and unsupported HW is
+automatically rejected by the bridge, so there's no use keeping
+the test in the stm driver.
+
+The main reason prompting this change is that the stm driver
+test immediately disabled the peripheral clock after reading
+the version, making the bridge read version 0x0 immediately
+after in its own probe(), so we move the clock disabling after
+the bridge does the version test.
+
+Tested on STM32F769 and STM32MP1.
+
+Cc: linux-stm32@st-md-mailman.stormreply.com
+Cc: Emil Velikov <emil.velikov@collabora.com>
+Reported-by: Adrian Pop <pop.adrian61@gmail.com>
+Tested-by: Adrian Pop <pop.adrian61@gmail.com>
+Tested-by: Arnaud Ferraris <arnaud.ferraris@collabora.com>
+Signed-off-by: Adrian Ratiu <adrian.ratiu@collabora.com>
+---
+ drivers/gpu/drm/stm/dw_mipi_dsi-stm.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/gpu/drm/stm/dw_mipi_dsi-stm.c b/drivers/gpu/drm/stm/dw_mipi_dsi-stm.c
+index 89897d5f5c72..ec6a5f6dbc26 100644
+--- a/drivers/gpu/drm/stm/dw_mipi_dsi-stm.c
++++ b/drivers/gpu/drm/stm/dw_mipi_dsi-stm.c
+@@ -492,21 +492,13 @@ static int dw_mipi_dsi_stm_probe(struct platform_device *pdev)
+ 		goto err_dsi_probe;
+ 	}
+ 
++	/* enable pclk so MMIO register values can be read, else reads == 0x0 */
+ 	ret = clk_prepare_enable(pclk);
+ 	if (ret) {
+ 		DRM_ERROR("%s: Failed to enable peripheral clk\n", __func__);
+ 		goto err_dsi_probe;
+ 	}
+ 
+-	dsi->hw_version = dsi_read(dsi, DSI_VERSION) & VERSION;
+-	clk_disable_unprepare(pclk);
+-
+-	if (dsi->hw_version != HWVER_130 && dsi->hw_version != HWVER_131) {
+-		ret = -ENODEV;
+-		DRM_ERROR("bad dsi hardware version\n");
+-		goto err_dsi_probe;
+-	}
+-
+ 	/* set lane capabilities according to hw version */
+ 	dsi->lane_min_kbps = LANE_MIN_KBPS;
+ 	dsi->lane_max_kbps = LANE_MAX_KBPS;
+@@ -520,6 +512,7 @@ static int dw_mipi_dsi_stm_probe(struct platform_device *pdev)
+ 
+ 	platform_set_drvdata(pdev, dsi);
+ 
++	/* setup the bridge, this will also access MMIO registers via regmap */
+ 	dsi->dsi = dw_mipi_dsi_probe(pdev, &dw_mipi_dsi_stm_plat_data);
+ 	if (IS_ERR(dsi->dsi)) {
+ 		ret = PTR_ERR(dsi->dsi);
+@@ -527,6 +520,11 @@ static int dw_mipi_dsi_stm_probe(struct platform_device *pdev)
+ 		goto err_dsi_probe;
+ 	}
+ 
++	dsi->hw_version = dsi_read(dsi, DSI_VERSION) & VERSION;
++
++	/* initial MMIO config done, disable clk to save power */
++	clk_disable_unprepare(pclk);
++
+ 	return 0;
+ 
+ err_dsi_probe:
+-- 
+2.37.1
+

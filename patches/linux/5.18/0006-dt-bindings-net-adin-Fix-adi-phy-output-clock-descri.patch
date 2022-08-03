@@ -1,10 +1,8 @@
-From 095c0dcbe5958726021d07b9bfb6dcdd4bbcb001 Mon Sep 17 00:00:00 2001
-From: Yazan Shhady <yazan.shhady@solid-run.com>
-Date: Thu, 26 May 2022 19:48:21 +0300
-Subject: [PATCH 4/5] dt-bindings: net: adin: Fix adi,phy-output-clock
- description syntax
-
+From 360cc815724325c1f0183965d88ecd1673f70778 Mon Sep 17 00:00:00 2001
 From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Thu, 26 May 2022 19:48:21 +0300
+Subject: [PATCH 06/18] dt-bindings: net: adin: Fix adi,phy-output-clock
+ description syntax
 
 "make dt_binding_check":
 
@@ -22,7 +20,7 @@ Signed-off-by: Yazan Shhady <yazan.shhady@solid-run.com>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/Documentation/devicetree/bindings/net/adi,adin.yaml b/Documentation/devicetree/bindings/net/adi,adin.yaml
-index 77750df0c..886117205 100644
+index 77750df0c2c4..88611720545d 100644
 --- a/Documentation/devicetree/bindings/net/adi,adin.yaml
 +++ b/Documentation/devicetree/bindings/net/adi,adin.yaml
 @@ -37,7 +37,8 @@ properties:
@@ -36,5 +34,5 @@ index 77750df0c..886117205 100644
        The phy can alternatively automatically switch between the reference and
        the 125MHz clocks based on its internal state.
 -- 
-2.17.1
+2.37.1
 

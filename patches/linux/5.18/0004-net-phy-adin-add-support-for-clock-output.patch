@@ -1,7 +1,7 @@
-From 10d36ca8f8ad9c0e95ceba48f06b2c3e4e2d70c3 Mon Sep 17 00:00:00 2001
+From ffa76e9dc5607baa25e8a96f1a1ca6b76dedf18e Mon Sep 17 00:00:00 2001
 From: Yazan Shhady <yazan.shhady@solid-run.com>
 Date: Thu, 26 May 2022 19:43:10 +0300
-Subject: [PATCH 2/5] net: phy: adin: add support for clock output
+Subject: [PATCH 04/18] net: phy: adin: add support for clock output
 
 The ADIN1300 supports generating certain clocks on its GP_CLK pin, as
 well as providing the reference clock on CLK25_REF.
@@ -21,7 +21,7 @@ Signed-off-by: Josua Mayer<josua@solid-run.com>
  1 file changed, 39 insertions(+)
 
 diff --git a/drivers/net/phy/adin.c b/drivers/net/phy/adin.c
-index 5ce6da62c..6fa95eb94 100644
+index 5ce6da62cc8e..6fa95eb94898 100644
 --- a/drivers/net/phy/adin.c
 +++ b/drivers/net/phy/adin.c
 @@ -98,6 +98,14 @@
@@ -85,5 +85,5 @@ index 5ce6da62c..6fa95eb94 100644
  		   phy_modes(phydev->interface));
  
 -- 
-2.17.1
+2.37.1
 

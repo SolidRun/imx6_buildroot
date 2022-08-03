@@ -5,7 +5,7 @@ echo "test one start .....................!!"
 ###################################################################################################################################
 #                                                       Global environment
 
-BUILDROOT_VERSION=2022.02
+BUILDROOT_VERSION=2022.02.4
 
 export ARCH=arm
 export CROSS_COMPILE=$BASE_DIR/build/buildroot/output/host/bin/arm-linux-
@@ -18,6 +18,10 @@ if [ "x$SHALLOW" == "xtrue" ]; then
         SHALLOW_FLAG="--depth 500"
 fi
 
+if [ "x$CUSTOM_CONFIG" == "x" ]; then
+        CUSTOM_CONFIG=imx6_solidrun_base_defconfig
+fi
+
 REPO_PREFIX=`git log -1 --pretty=format:%h`
 
 # Get number of jobs in this machine to use with make command
@@ -27,6 +31,7 @@ JOBS=$(getconf _NPROCESSORS_ONLN)
 #                                                       INSTALL Packages
 
 PACKAGES_LIST="git make mtools bison coreutils u-boot-tools gcc-arm-linux-gnueabihf gcc-arm-linux-gnueabi python3 python3-pyelftools libssl-dev build-essential device-tree-compiler bc unzip tar util-linux binutils e2fsprogs gawk wget diffstat texinfo chrpath sed g++ bash patch cpio rsync file python3-pip flex parted"
+PACKAGES_LIST=""
 
 set +e
 for i in $PACKAGES_LIST; do
@@ -59,7 +64,7 @@ fi
 # Build buildroot
 echo "*** Building buildroot"
 cd $BASE_DIR/build/buildroot
-cp $BASE_DIR/configs/imx6_solidrun_minimal_defconfig configs/imx6_solidrun_defconfig
+cp $BASE_DIR/configs/$CUSTOM_CONFIG configs/imx6_solidrun_defconfig
 make imx6_solidrun_defconfig
 make
 
