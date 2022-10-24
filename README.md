@@ -64,3 +64,16 @@ If you use **HummingBoard CBI** Carrier board, you should change the U-Boot envi
 ```
 setenv is_cbi yes; saveenv; boot
 ```
+#Interface's testing
+| Interface  | Status |
+| ------------- | ------------- |
+| Ethernet - eth0  | OK  |
+| Wifi - wlan0  | scaning works, wasn't able to connect to wifi , getting "wlan0: deauthenticating from 42:88:09:a4:99:a2 by local choice (Reason: 3=DEAUTH_LEAVING)" |
+| USB  | OK  |
+| HDMI  | OK |
+| SD-CARD | OK  |
+| LTE Modem  | OK  |
+| Infrared | OK |
+| Bluetooth  | Dosen't work, getting error [  187.377588] Bluetooth: hci0: download firmware failed, retrying...[  248.807825] Bluetooth: hci0: request_firmware failed(errno -110) for ti-connectivity/TIInit_11.8.32.bts[  248.817647] Bluetooth: hci0: download firmware failed, retrying...|
+| SoundCard  | Dosen't work  |
+| M.2 | NOT TESTED  |
