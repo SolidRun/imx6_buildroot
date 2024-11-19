@@ -40,7 +40,7 @@ RUN if [ -z "$userid" ]; then printf "\n\nuserid argument not received\n\n"; exi
 
 
 # Add user
-RUN useradd -u $userid $user
+RUN if [ "$user" != "root" ]; then useradd -u $userid $user; fi
 
 # Run as user
 USER $user

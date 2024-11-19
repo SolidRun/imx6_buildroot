@@ -61,6 +61,9 @@ echo "*** Building buildroot"
 cd $BASE_DIR/build/buildroot
 cp $BASE_DIR/patches/buildroot/local.mk $BASE_DIR/build/buildroot
 cp $BASE_DIR/configs/imx6_solidrun_minimal_defconfig configs/imx6_solidrun_defconfig
+if [ $UID -eq 0 ]; then
+	export FORCE_UNSAFE_CONFIGURE=1
+fi
 make imx6_solidrun_defconfig
 make
 
